@@ -34,4 +34,20 @@ const addController = async (req, res) => {
   }
 };
 
-export { addController };
+const getCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({});
+    return res.status(200).json({
+      success: true,
+      data: categories,
+      message: "Categories fetched successfully",
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export { addController, getCategories };
