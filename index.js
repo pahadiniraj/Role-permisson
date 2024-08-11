@@ -36,6 +36,10 @@ app.use("/api", authRoute);
 import adminRoute from "./routes/adminRoutes.js";
 app.use("/api/admin", adminRoute);
 
+// common route
+import commonRoute from "./routes/commonRoutes.js";
+app.use("/api", commonRoute);
+
 app.listen(process.env.PORT, () => {
   console.log(`listening on ${process.env.PORT}`);
 });
