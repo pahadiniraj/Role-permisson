@@ -14,7 +14,10 @@ const updatePermission = async (req, res) => {
 
     const isNameAssigned = await Permission.findOne({
       _id: { $ne: id },
-      permissionName,
+      permissionName: {
+        $regex: permissionName,
+        $options: "i", // case insensitive search
+      },
     });
     if (isNameAssigned) {
       return res.status(400).json({

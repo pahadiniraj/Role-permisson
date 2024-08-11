@@ -5,7 +5,12 @@ const addPermission = async (req, res) => {
     const { permissionName, isDefault } = req.body; // Destructure with a default value
 
     // Check if the permission already exists
-    const isPermissionExist = await Permission.findOne({ permissionName });
+    const isPermissionExist = await Permission.findOne({
+      permissionName: {
+        $regex: permissionName,
+        $options: "i", // Case-insensitive search
+      },
+    });
     if (isPermissionExist) {
       return res.status(400).json({
         success: false,
