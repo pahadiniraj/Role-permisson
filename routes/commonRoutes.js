@@ -12,9 +12,15 @@ import {
   getCategories,
   updateCategory,
 } from "../controllers/category/allCategory.controller.js";
-import { createPostValidator } from "../helpers/postValidator.js";
-import { createPost } from "../controllers/post/createPost.controller.js";
+import {
+  createPostValidator,
+  deletePostValidator,
+  updatePostValidator,
+} from "../helpers/postValidator.js";
+import { createPost } from "../controllers/post/post.controller.js";
 import { getPost } from "../controllers/post/getPost.controller.js";
+import { deletePost } from "../controllers/post/deletePost.controller.js";
+import { updatePost } from "../controllers/post/updatePost.controller.js";
 
 const router = Router();
 
@@ -38,5 +44,12 @@ router
   .route("/create-post")
   .post(verifyToken, validateRequest(createPostValidator), createPost);
 router.route("/get-posts").get(verifyToken, getPost);
+router
+  .route("/delete-post")
+  .post(verifyToken, validateRequest(deletePostValidator), deletePost);
+
+router
+  .route("/update-post")
+  .post(verifyToken, validateRequest(updatePostValidator), updatePost);
 
 export default router;
