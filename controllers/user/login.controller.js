@@ -1,0 +1,45 @@
+import { User } from "../../model/user.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const generateAccessToken = (user) => {
+  const token = jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, {
+    expiresIn: "2h",
+  });
+  return token;
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const userExist = await User.findOne({ email });
+
+    if (!userExist) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, userExist.password);
+    if (!isPasswordMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect password" });
+    }
+
+    const accessToken = generateAccessToken({ user: userExist });
+
+    return res.json({
+      success: true,
+      message: "Login successful",
+      accessToken,
+      tokenType: "Bearer",
+      data: userExist,
+    });
+  } catch (error) {
+    res.status(500).json({ sucess: false, message: error.message });
+  }
+};
+
+export { loginUser };
