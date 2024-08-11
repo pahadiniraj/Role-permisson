@@ -12,8 +12,13 @@ import {
   getCategories,
   updateCategory,
 } from "../controllers/category/allCategory.controller.js";
+import { createPostValidator } from "../helpers/postValidator.js";
+import { createPost } from "../controllers/post/createPost.controller.js";
+import { getPost } from "../controllers/post/getPost.controller.js";
 
 const router = Router();
+
+// category routes
 
 router
   .route("/add-category")
@@ -26,4 +31,12 @@ router
 router
   .route("/update-category")
   .post(verifyToken, validateRequest(categoryUpdateValidator), updateCategory);
+
+// post routes
+
+router
+  .route("/create-post")
+  .post(verifyToken, validateRequest(createPostValidator), createPost);
+router.route("/get-posts").get(verifyToken, getPost);
+
 export default router;
