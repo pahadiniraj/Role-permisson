@@ -50,4 +50,81 @@ const getCategories = async (req, res) => {
   }
 };
 
-export { addController, getCategories };
+const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const category = await Category.findByIdAndDelete({ _id: id });
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const updateCategory = async (req, res) => {
+  try {
+    const { id, categoryName } = req.body;
+    const checkId = await Category.findOne({ _id: id });
+
+    if (!checkId) {
+      return res.status(404).json({
+        success: false,
+        message: "Category ID not found",
+      });
+    }
+    if (checkId.categoryName.toLowerCase() === categoryName.toLowerCase()) {
+      return res.status(400).json({
+        success: false,
+        message: "Category name is the same as the current one",
+      });
+    }
+    const checkBoth = await Category.findOne({
+      categoryName: {
+        $regex: categoryName,
+        $options: "i",
+      },
+      _id: { $ne: id },
+    });
+    if (checkBoth) {
+      return res.status(400).json({
+        success: false,
+        message: "Category already exists",
+      });
+    }
+
+    const updateCategory = await Category.findByIdAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          categoryName,
+        },
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Category updated successfully",
+      data: updateCategory,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export { addController, getCategories, deleteCategory, updateCategory };
