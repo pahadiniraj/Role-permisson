@@ -7,6 +7,7 @@ const userPermissionSchema = new Schema({
     required: true,
   },
 
+  
   permissions: [
     {
       permissionName: String,

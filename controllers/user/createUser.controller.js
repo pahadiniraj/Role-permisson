@@ -1,6 +1,7 @@
 import Randomstring from "randomstring";
 import bcrypt from "bcrypt";
 import { User } from "../../model/user.model.js";
+import { sendMail } from "../../helpers/mailer.js";
 
 const createUser = async (req, res) => {
   try {
@@ -37,6 +38,27 @@ const createUser = async (req, res) => {
     const savedUser = await user.save();
 
     console.log(password);
+
+    const content = `
+    <p>Hey <b> ${savedUser.fullName} </b> your account is created.below is your details.</p>
+    <table style = "border-style : none">
+    <tr>
+    <th>Name</th>
+    <td>${savedUser.fullName}</td>
+    </tr>
+    <tr>
+    <th>Email</th>
+    <td>${savedUser.email}</td>
+    </tr><tr>
+    <th>Password</th>
+    <td>${password}</td>
+    </tr>
+    
+    </table>
+    <p>Please remember to change your password after logging in for the first time.</p>
+    `;
+
+    sendMail(savedUser.email, "Account created successfully", content);
     return res.status(200).json({
       success: true,
       message: "User created successfully",
