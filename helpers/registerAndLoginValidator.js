@@ -48,29 +48,29 @@ const loginSchema = Joi.object({
 
   password: Joi.string()
     .min(5) // Minimum length of 5 characters
-    .required() // Required field
-    .custom((value, helpers) => {
-      // Check for at least one uppercase letter
-      if (!/[A-Z]/.test(value)) {
-        return helpers.message(
-          "Password must contain at least one uppercase letter"
-        );
-      }
+    .required(), // Required field
+  // .custom((value, helpers) => {
+  //   // Check for at least one uppercase letter
+  //   if (!/[A-Z]/.test(value)) {
+  //     return helpers.message(
+  //       "Password must contain at least one uppercase letter"
+  //     );
+  //   }
 
-      // Check for at least one special character
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
-        return helpers.message(
-          "Password must contain at least one special character"
-        );
-      }
+  //   // Check for at least one special character
+  //   if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+  //     return helpers.message(
+  //       "Password must contain at least one special character"
+  //     );
+  //   }
 
-      // Check for at least one number
-      if (!/\d/.test(value)) {
-        return helpers.message("Password must contain at least one number");
-      }
+  //   // Check for at least one number
+  //   if (!/\d/.test(value)) {
+  //     return helpers.message("Password must contain at least one number");
+  //   }
 
-      return value; // If all checks pass, return the value
-    }),
+  //   return value; // If all checks pass, return the value
+  // }),
 
   // Other fields...
 });

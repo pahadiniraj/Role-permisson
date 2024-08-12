@@ -21,6 +21,8 @@ import { createPost } from "../controllers/post/post.controller.js";
 import { getPost } from "../controllers/post/getPost.controller.js";
 import { deletePost } from "../controllers/post/deletePost.controller.js";
 import { updatePost } from "../controllers/post/updatePost.controller.js";
+import { createUserSchema } from "../helpers/createUserValidator.js";
+import { createUser } from "../controllers/user/createUser.controller.js";
 
 const router = Router();
 
@@ -51,5 +53,11 @@ router
 router
   .route("/update-post")
   .post(verifyToken, validateRequest(updatePostValidator), updatePost);
+
+// create user
+
+router
+  .route("/create-user")
+  .post(verifyToken, validateRequest(createUserSchema), createUser);
 
 export default router;
