@@ -24,3 +24,12 @@ const permissionUpdateValidator = Joi.object({
 });
 
 export { permissionUpdateValidator };
+
+const storeRoleValidator = Joi.object({
+  roleName: Joi.string().required(), // Required field
+  value: Joi.string()
+    .empty("") // Treat empty string as undefined
+    .default("0"), // Default value is '0'
+});
+
+export { storeRoleValidator };
