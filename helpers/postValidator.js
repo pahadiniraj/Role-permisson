@@ -50,3 +50,8 @@ const postLikeUnlikeValidator = Joi.object({
   postId: Joi.string().required(), // The ID field is required
 });
 export { postLikeUnlikeValidator };
+
+const postLikeCountValidator = Joi.object({
+  postId: Joi.string().required(), // The ID field is required
+});
+export { postLikeCountValidator };
