@@ -9,8 +9,18 @@ const createUserSchema = Joi.object({
     .min(1) // Minimum length of 1 character
     .max(50) // Maximum length of 50 characters
     .required(), // Required field
-    
+
   role: Joi.string().default("0"),
 });
 
-export { createUserSchema };
+const updateUserValidator = Joi.object({
+  id: Joi.string().required(),
+
+  fullName: Joi.string()
+    .min(1) // Minimum length of 1 character
+    .max(50) // Maximum length of 50 characters
+    .required(), // Required field
+
+  role: Joi.string().default("0"),
+});
+export { createUserSchema, updateUserValidator };

@@ -21,8 +21,13 @@ import { createPost } from "../controllers/post/post.controller.js";
 import { getPost } from "../controllers/post/getPost.controller.js";
 import { deletePost } from "../controllers/post/deletePost.controller.js";
 import { updatePost } from "../controllers/post/updatePost.controller.js";
-import { createUserSchema } from "../helpers/createUserValidator.js";
+import {
+  createUserSchema,
+  updateUserValidator,
+} from "../helpers/UserValidator.js";
 import { createUser } from "../controllers/user/createUser.controller.js";
+import { getUsers } from "../controllers/user/getUsers.controller.js";
+import { updateUser } from "../controllers/user/updateUser.controller.js";
 
 const router = Router();
 
@@ -59,5 +64,10 @@ router
 router
   .route("/create-user")
   .post(verifyToken, validateRequest(createUserSchema), createUser);
+
+router.route("/get-users").get(verifyToken, getUsers);
+router
+  .route("/update-user")
+  .post(verifyToken, validateRequest(updateUserValidator), updateUser);
 
 export default router;
