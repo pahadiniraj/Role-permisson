@@ -15,6 +15,7 @@ import {
 import {
   createPostValidator,
   deletePostValidator,
+  postLikeUnlikeValidator,
   updatePostValidator,
 } from "../helpers/postValidator.js";
 import { createPost } from "../controllers/post/post.controller.js";
@@ -23,11 +24,15 @@ import { deletePost } from "../controllers/post/deletePost.controller.js";
 import { updatePost } from "../controllers/post/updatePost.controller.js";
 import {
   createUserSchema,
+  deleteUserValidator,
   updateUserValidator,
 } from "../helpers/UserValidator.js";
 import { createUser } from "../controllers/user/createUser.controller.js";
 import { getUsers } from "../controllers/user/getUsers.controller.js";
 import { updateUser } from "../controllers/user/updateUser.controller.js";
+import { deleteUser } from "../controllers/user/deleteUser.controller.js";
+import { postLike } from "../controllers/likeUnlike/like.controller.js";
+import { postUnlike } from "../controllers/likeUnlike/unlike.controller.js";
 
 const router = Router();
 
@@ -69,5 +74,18 @@ router.route("/get-users").get(verifyToken, getUsers);
 router
   .route("/update-user")
   .post(verifyToken, validateRequest(updateUserValidator), updateUser);
+
+router
+  .route("/delete-user")
+  .post(verifyToken, validateRequest(deleteUserValidator), deleteUser);
+
+// like and unlike routes
+
+router
+  .route("/post-like")
+  .post(verifyToken, validateRequest(postLikeUnlikeValidator), postLike);
+router
+  .route("/post-unlike")
+  .post(verifyToken, validateRequest(postLikeUnlikeValidator), postUnlike);
 
 export default router;

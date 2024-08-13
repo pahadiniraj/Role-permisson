@@ -44,3 +44,9 @@ const updatePostValidator = Joi.object({
 });
 
 export { updatePostValidator };
+
+const postLikeUnlikeValidator = Joi.object({
+  userId: Joi.string().required(), // The ID field is required
+  postId: Joi.string().required(), // The ID field is required
+});
+export { postLikeUnlikeValidator };

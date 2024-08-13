@@ -24,3 +24,9 @@ const updateUserValidator = Joi.object({
   role: Joi.string().default("0"),
 });
 export { createUserSchema, updateUserValidator };
+
+const deleteUserValidator = Joi.object({
+  id: Joi.string().required(),
+});
+
+export { deleteUserValidator };
