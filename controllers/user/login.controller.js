@@ -30,12 +30,50 @@ const loginUser = async (req, res) => {
 
     const accessToken = generateAccessToken({ user: userExist });
 
+    // get user data with all permissions
+
+    const result = await User.aggregate([
+      {
+        $match: { email: userExist.email },
+      },
+      {
+        $lookup: {
+          from: "userpermissions",
+          localField: "_id",
+          foreignField: "userId",
+          as: "permissions",
+        },
+      },
+      {
+        $project: {
+          _id: 1, // only id can be kept 0
+          fullName: 1,
+          email: 1,
+          permissions: {
+            $cond: {
+              if: { $isArray: "$permissions" },
+              then: { $arrayElemAt: ["$permissions", 0] },
+              else: null,
+            },
+          },
+          role: 1,
+        },
+      },
+      {
+        $addFields: {
+          permissions: {
+            permissions: "$permissions.permissions",
+          },
+        },
+      },
+    ]);
+
     return res.json({
       success: true,
       message: "Login successful",
       accessToken,
       tokenType: "Bearer",
-      data: userExist,
+      data: result[0],
     });
   } catch (error) {
     res.status(500).json({ sucess: false, message: error.message });

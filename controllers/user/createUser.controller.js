@@ -2,6 +2,8 @@ import Randomstring from "randomstring";
 import bcrypt from "bcrypt";
 import { User } from "../../model/user.model.js";
 import { sendMail } from "../../helpers/mailer.js";
+import { Permission } from "../../model/permission.model.js";
+import { UserPermission } from "../../model/userPermission.model.js";
 
 const createUser = async (req, res) => {
   try {
@@ -36,6 +38,32 @@ const createUser = async (req, res) => {
 
     const user = new User(obj);
     const savedUser = await user.save();
+
+    // add permissions to user if comming in request
+
+    if (req.body.permissions != undefined && req.body.permissions.length > 0) {
+      const addPermission = req.body.permissions;
+
+      const permissionArray = [];
+
+      await Promise.all(
+        addPermission.map(async (permission) => {
+          const permissionData = await Permission.findOne({
+            _id: permission.id,
+          });
+          permissionArray.push({
+            permissionName: permissionData.permissionName,
+            permissionValue: permission.value,
+          });
+        })
+      );
+
+      const userPermission = new UserPermission({
+        userId: savedUser._id,
+        permissions: permissionArray,
+      });
+      await userPermission.save();
+    }
 
     console.log(password);
 

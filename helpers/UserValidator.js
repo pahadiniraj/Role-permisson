@@ -11,6 +11,7 @@ const createUserSchema = Joi.object({
     .required(), // Required field
 
   role: Joi.string().default("0"),
+  permissions: Joi.array(),
 });
 
 const updateUserValidator = Joi.object({
